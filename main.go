@@ -25,17 +25,13 @@ var (
 	loginController controller.LoginController = controller.NewLoginController(loginService, jwtService)
 )
 
-// @securityDefinitions.apikey bearerAuth
-// @in header
-// @name Authorization
 func main() {
 
 	// Swagger 2.0 Meta Information
-	docs.SwaggerInfo.Title = "Pragmatic Reviews - Video API"
-	docs.SwaggerInfo.Description = "Pragmatic Reviews - Youtube Video API."
-	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "pragmatic-video-app.herokuapp.com"
-	docs.SwaggerInfo.BasePath = "/api/v1"
+	docs.SwaggerInfo.Title = "Go Infra API"
+	docs.SwaggerInfo.Description = "Preliminary API for infrastructure provisioning."
+	docs.SwaggerInfo.Host = "localhost:8080"
+	docs.SwaggerInfo.BasePath = "/api"
 	docs.SwaggerInfo.Schemes = []string{"https"}
 
 	defer videoRepository.CloseDB()
@@ -45,29 +41,32 @@ func main() {
 	videoAPI := api.NewVideoAPI(loginController, videoController)
 
 	apiRoutes := server.Group(docs.SwaggerInfo.BasePath)
-	{
-		login := apiRoutes.Group("/auth")
+	{	
+		
+		aws := apiRoutes.Group("/aws")
 		{
-			login.POST("/token", videoAPI.Authenticate)
+			aws.GET("", videoAPI.GetVideos).Use(middlewares.Auth())
+			aws.POST("", videoAPI.CreateVideo).Use(middlewares.Auth())
+			aws.DELETE(":id", videoAPI.DeleteVideo).Use(middlewares.Auth())
 		}
 
-		videos := apiRoutes.Group("/videos", middlewares.AuthorizeJWT())
+		azure := apiRoutes.Group("/azure")
 		{
-			videos.GET("", videoAPI.GetVideos)
-			videos.POST("", videoAPI.CreateVideo)
-			videos.PUT(":id", videoAPI.UpdateVideo)
-			videos.DELETE(":id", videoAPI.DeleteVideo)
+			azure.GET("", videoAPI.GetVideos).Use(middlewares.Auth())
+			azure.POST("", videoAPI.CreateVideo).Use(middlewares.Auth())
+			azure.DELETE(":id", videoAPI.DeleteVideo).Use(middlewares.Auth())
+		}
+
+		gcp := apiRoutes.Group("/gcp")
+		{
+			gcp.GET("", videoAPI.GetVideos).Use(middlewares.Auth())
+			gcp.POST("", videoAPI.CreateVideo).Use(middlewares.Auth())
+			gcp.DELETE(":id", videoAPI.DeleteVideo).Use(middlewares.Auth())
 		}
 	}
 
 	server.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	// We can setup this env variable from the EB console
-	port := os.Getenv("PORT")
-
-	// Elastic Beanstalk forwards requests to port 5000
-	if port == "" {
-		port = "5000"
-	}
+	port := "8080"
 	server.Run(":" + port)
 }
