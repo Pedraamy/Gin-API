@@ -1,0 +1,268 @@
+definitions:
+  dto.Response:
+    properties:
+      message:
+        type: string
+    type: object
+  entity.AwsResource:
+    properties:
+      id:
+        type: integer
+      title:
+        maxLength: 100
+        minLength: 2
+        type: string
+    type: object
+  entity.AzureResource:
+    properties:
+      id:
+        type: integer
+      title:
+        maxLength: 100
+        minLength: 2
+        type: string
+    type: object
+  entity.GcpResource:
+    properties:
+      id:
+        type: integer
+      title:
+        maxLength: 100
+        minLength: 2
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /aws:
+    get:
+      consumes:
+      - application/json
+      description: Get all the AWS Resources
+      parameters:
+      - description: First Name
+        in: formData
+        name: firstname
+        required: true
+        type: string
+      - description: Last Name
+        in: formData
+        name: lastname
+        required: true
+        type: string
+      - description: Graph Token
+        in: formData
+        name: graphtoken
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.AwsResource'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: List AWS Resources
+    post:
+      consumes:
+      - application/json
+      description: Create a new AWS Resource
+      parameters:
+      - description: Create Resource
+        in: body
+        name: video
+        required: true
+        schema:
+          $ref: '#/definitions/entity.AwsResource'
+      - description: First Name
+        in: formData
+        name: firstname
+        required: true
+        type: string
+      - description: Last Name
+        in: formData
+        name: lastname
+        required: true
+        type: string
+      - description: Graph Token
+        in: formData
+        name: graphtoken
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: Create new AWS Resource
+  /azure:
+    get:
+      consumes:
+      - application/json
+      description: Get all the Azure Resources
+      parameters:
+      - description: First Name
+        in: formData
+        name: firstname
+        required: true
+        type: string
+      - description: Last Name
+        in: formData
+        name: lastname
+        required: true
+        type: string
+      - description: Graph Token
+        in: formData
+        name: graphtoken
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.AzureResource'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: List Azure Resources
+    post:
+      consumes:
+      - application/json
+      description: Create a new Azure Resource
+      parameters:
+      - description: Create Resource
+        in: body
+        name: video
+        required: true
+        schema:
+          $ref: '#/definitions/entity.AzureResource'
+      - description: First Name
+        in: formData
+        name: firstname
+        required: true
+        type: string
+      - description: Last Name
+        in: formData
+        name: lastname
+        required: true
+        type: string
+      - description: Graph Token
+        in: formData
+        name: graphtoken
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: Create new Azure Resource
+  /gcp:
+    get:
+      consumes:
+      - application/json
+      description: Get all the AWS Resources
+      parameters:
+      - description: First Name
+        in: formData
+        name: firstname
+        required: true
+        type: string
+      - description: Last Name
+        in: formData
+        name: lastname
+        required: true
+        type: string
+      - description: Graph Token
+        in: formData
+        name: graphtoken
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.GcpResource'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: List GCP Resources
+    post:
+      consumes:
+      - application/json
+      description: Create a new GCP Resource
+      parameters:
+      - description: Create Resource
+        in: body
+        name: video
+        required: true
+        schema:
+          $ref: '#/definitions/entity.GcpResource'
+      - description: First Name
+        in: formData
+        name: firstname
+        required: true
+        type: string
+      - description: Last Name
+        in: formData
+        name: lastname
+        required: true
+        type: string
+      - description: Graph Token
+        in: formData
+        name: graphtoken
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: Create new GCP Resource
+swagger: "2.0"

@@ -91,8 +91,8 @@ func (api *ResourceApi) AddAwsResource(ctx *gin.Context) {
 }
 
 // CreateAzure godoc
-// @Summary Create new AWS Resource
-// @Description Create a new AWS Resource
+// @Summary Create new Azure Resource
+// @Description Create a new Azure Resource
 // @Accept  json
 // @Produce  json
 // @Param video body entity.AzureResource true "Create Resource"
@@ -102,7 +102,7 @@ func (api *ResourceApi) AddAwsResource(ctx *gin.Context) {
 // @Success 200 {object} dto.Response
 // @Failure 400 {object} dto.Response
 // @Failure 401 {object} dto.Response
-// @Router /aws [post]
+// @Router /azure [post]
 func (api *ResourceApi) AddAzureResource(ctx *gin.Context) {
 	err := api.controller.AddAzure(ctx)
 	if err != nil {
@@ -117,8 +117,8 @@ func (api *ResourceApi) AddAzureResource(ctx *gin.Context) {
 }
 
 // CreateGcp godoc
-// @Summary Create new AWS Resource
-// @Description Create a new AWS Resource
+// @Summary Create new GCP Resource
+// @Description Create a new GCP Resource
 // @Accept  json
 // @Produce  json
 // @Param video body entity.GcpResource true "Create Resource"
@@ -128,7 +128,7 @@ func (api *ResourceApi) AddAzureResource(ctx *gin.Context) {
 // @Success 200 {object} dto.Response
 // @Failure 400 {object} dto.Response
 // @Failure 401 {object} dto.Response
-// @Router /aws [post]
+// @Router /gcp [post]
 func (api *ResourceApi) AddGcpResource(ctx *gin.Context) {
 	err := api.controller.AddGcp(ctx)
 	if err != nil {
