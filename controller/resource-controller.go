@@ -1,13 +1,11 @@
 package controller
 
 import (
-	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"gitlab.com/pragmaticreviews/golang-gin-poc/entity"
-	"gitlab.com/pragmaticreviews/golang-gin-poc/repository"
-	"gitlab.com/pragmaticreviews/golang-gin-poc/service"
+	"github.com/pedraamy/gin-api/entity"
+	"github.com/pedraamy/gin-api/repository"
 	"gopkg.in/go-playground/validator.v9"
 )
 
@@ -25,12 +23,12 @@ type ResourceController interface {
 
 type controller struct {
 	repo repository.ResourceRepo
+	validate *validator.Validate
 }
 
-var validate *validator.Validate
-
-func NewController(repo repository.ResourceRepo) *controller {
-	return &controller{repo: repo}
+func NewController(repo repository.ResourceRepo) ResourceController {
+	validate := validator.New()
+	return &controller{repo: repo, validate: validate}
 }
 
 func (ctrl *controller) GetAllAws() []entity.AwsResource {
@@ -51,7 +49,7 @@ func (ctrl *controller) AddAws(c *gin.Context) error {
 	if err != nil {
 		return err
 	}
-	err = validate.Struct(resource)
+	err = ctrl.validate.Struct(resource)
 	if err != nil {
 		return err
 	}
@@ -65,7 +63,7 @@ func (ctrl *controller) AddAzure(c *gin.Context) error {
 	if err != nil {
 		return err
 	}
-	err = validate.Struct(resource)
+	err = ctrl.validate.Struct(resource)
 	if err != nil {
 		return err
 	}
@@ -79,7 +77,7 @@ func (ctrl *controller) AddGcp(c *gin.Context) error {
 	if err != nil {
 		return err
 	}
-	err = validate.Struct(resource)
+	err = ctrl.validate.Struct(resource)
 	if err != nil {
 		return err
 	}
@@ -118,45 +116,4 @@ func (ctrl *controller) DeleteGcp(ctx *gin.Context) error {
 	video.ID = id
 	ctrl.repo.DeleteGcp(video)
 	return nil
-}
-
-func (c *controller) Update(ctx *gin.Context) error {
-	var video entity.Video
-	err := ctx.ShouldBindJSON(&video)
-	if err != nil {
-		return err
-	}
-
-	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
-	if err != nil {
-		return err
-	}
-	video.ID = id
-
-	err = validate.Struct(video)
-	if err != nil {
-		return err
-	}
-	c.service.Update(video)
-	return nil
-}
-
-func (c *controller) Delete(ctx *gin.Context) error {
-	var video entity.Video
-	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
-	if err != nil {
-		return err
-	}
-	video.ID = id
-	c.service.Delete(video)
-	return nil
-}
-
-func (c *controller) ShowAll(ctx *gin.Context) {
-	videos := c.service.FindAll()
-	data := gin.H{
-		"title":  "Video Page",
-		"videos": videos,
-	}
-	ctx.HTML(http.StatusOK, "index.html", data)
 }

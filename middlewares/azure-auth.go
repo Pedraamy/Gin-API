@@ -1,5 +1,15 @@
 package middlewares
 
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/pedraamy/gin-api/dto"
+)
+
 func GetResponseBody(url string, headerKey string, headerValue string) (map[string]interface{}, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)

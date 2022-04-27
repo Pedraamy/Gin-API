@@ -1,6 +1,6 @@
 // +heroku install .
 
-module gitlab.com/pragmaticreviews/golang-gin-poc
+module github.com/pedraamy/gin-api
 
 go 1.12
 
