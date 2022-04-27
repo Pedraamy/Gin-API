@@ -6,10 +6,10 @@ import (
 	"github.com/pedraamy/gin-api/api"
 	"github.com/pedraamy/gin-api/controller"
 	"github.com/pedraamy/gin-api/repository"
-	"github.com/pedraany/gin-api/api"
-	"github.com/pedraany/gin-api/controller"
-	"github.com/pedraany/gin-api/middlewares"
-	"github.com/pedraany/gin-api/respository"
+	"github.com/pedraamy/gin-api/api"
+	"github.com/pedraamy/gin-api/controller"
+	"github.com/pedraamy/gin-api/middlewares"
+	"github.com/pedraamy/gin-api/respository"
 
 	swaggerFiles "github.com/swaggo/files"     // swagger embed files
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
