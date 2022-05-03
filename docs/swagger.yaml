@@ -1,0 +1,167 @@
+definitions:
+  dto.Response:
+    properties:
+      message:
+        type: string
+    type: object
+  entity.Resource:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /aws:
+    get:
+      consumes:
+      - application/json
+      description: Get all the AWS Resources
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Resource'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: List AWS Resources
+      tags:
+      - AWS
+    post:
+      consumes:
+      - application/json
+      description: Create a new AWS Resource
+      parameters:
+      - description: Create Resource
+        in: body
+        name: resource
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Resource'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: Create new AWS Resource
+      tags:
+      - AWS
+  /azure:
+    get:
+      consumes:
+      - application/json
+      description: Get all the Azure Resources
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Resource'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: List Azure Resources
+      tags:
+      - Azure
+    post:
+      consumes:
+      - application/json
+      description: Create a new Azure Resource
+      parameters:
+      - description: Create Resource
+        in: body
+        name: resource
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Resource'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: Create new Azure Resource
+      tags:
+      - Azure
+  /gcp:
+    get:
+      consumes:
+      - application/json
+      description: Get all the AWS Resources
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Resource'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: List GCP Resources
+      tags:
+      - GCP
+    post:
+      consumes:
+      - application/json
+      description: Create a new GCP Resource
+      parameters:
+      - description: Create Resource
+        in: body
+        name: resource
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Resource'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Response'
+      summary: Create new GCP Resource
+      tags:
+      - GCP
+swagger: "2.0"

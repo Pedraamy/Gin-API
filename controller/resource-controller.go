@@ -1,24 +1,24 @@
 package controller
 
 import (
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pedraamy/gin-api/entity"
 	"github.com/pedraamy/gin-api/repository"
 	"gopkg.in/go-playground/validator.v9"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type ResourceController interface {
 	AddAws(c *gin.Context) error
 	AddAzure(c *gin.Context) error
 	AddGcp(c *gin.Context) error
-	DeleteAws(c *gin.Context) error
+	/* DeleteAws(c *gin.Context) error
 	DeleteAzure(c *gin.Context) error
-	DeleteGcp(c *gin.Context) error
-	GetAllAws() []entity.AwsResource
-	GetAllAzure() []entity.AzureResource
-	GetAllGcp() []entity.GcpResource
+	DeleteGcp(c *gin.Context) error */
+	GetAllAws() ([]bson.D, error)
+	GetAllAzure() ([]bson.D, error)
+	GetAllGcp() ([]bson.D, error)
 }
 
 type controller struct {
@@ -31,20 +31,32 @@ func NewController(repo repository.ResourceRepo) ResourceController {
 	return &controller{repo: repo, validate: validate}
 }
 
-func (ctrl *controller) GetAllAws() []entity.AwsResource {
-	return ctrl.repo.GetAllAws()
+func (ctrl *controller) GetAllAws() ([]bson.D, error) {
+	res, err := ctrl.repo.GetAllAws()
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
 }
 
-func (ctrl *controller) GetAllAzure() []entity.AzureResource {
-	return ctrl.repo.GetAllAzure()
+func (ctrl *controller) GetAllAzure() ([]bson.D, error) {
+	res, err := ctrl.repo.GetAllAzure()
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
 }
 
-func (ctrl *controller) GetAllGcp() []entity.GcpResource {
-	return ctrl.repo.GetAllGcp()
+func (ctrl *controller) GetAllGcp() ([]bson.D, error) {
+	res, err := ctrl.repo.GetAllGcp()
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
 }
 
 func (ctrl *controller) AddAws(c *gin.Context) error {
-	var resource entity.AwsResource
+	var resource entity.Resource
 	err := c.ShouldBindJSON(&resource)
 	if err != nil {
 		return err
@@ -53,12 +65,15 @@ func (ctrl *controller) AddAws(c *gin.Context) error {
 	if err != nil {
 		return err
 	}
-	ctrl.repo.AddAws(resource)
+	err = ctrl.repo.AddAws(resource)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (ctrl *controller) AddAzure(c *gin.Context) error {
-	var resource entity.AzureResource
+	var resource entity.Resource
 	err := c.ShouldBindJSON(&resource)
 	if err != nil {
 		return err
@@ -67,12 +82,15 @@ func (ctrl *controller) AddAzure(c *gin.Context) error {
 	if err != nil {
 		return err
 	}
-	ctrl.repo.AddAzure(resource)
+	err = ctrl.repo.AddAzure(resource)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
 func (ctrl *controller) AddGcp(c *gin.Context) error {
-	var resource entity.GcpResource
+	var resource entity.Resource
 	err := c.ShouldBindJSON(&resource)
 	if err != nil {
 		return err
@@ -81,12 +99,15 @@ func (ctrl *controller) AddGcp(c *gin.Context) error {
 	if err != nil {
 		return err
 	}
-	ctrl.repo.AddGcp(resource)
+	err = ctrl.repo.AddGcp(resource)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
-func (ctrl *controller) DeleteAws(ctx *gin.Context) error {
-	var video entity.AwsResource
+/* func (ctrl *controller) DeleteAws(ctx *gin.Context) error {
+	var video entity.Resource
 	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
 	if err != nil {
 		return err
@@ -116,4 +137,4 @@ func (ctrl *controller) DeleteGcp(ctx *gin.Context) error {
 	video.ID = id
 	ctrl.repo.DeleteGcp(video)
 	return nil
-}
+} */

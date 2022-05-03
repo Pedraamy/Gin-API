@@ -6,18 +6,12 @@ import (
 	"github.com/pedraamy/gin-api/repository"
 	"github.com/pedraamy/gin-api/api"
 	"github.com/pedraamy/gin-api/controller"
-	"github.com/pedraamy/gin-api/middlewares"
 	"github.com/pedraamy/gin-api/docs"
 
 	swaggerFiles "github.com/swaggo/files"     // swagger embed files
 	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 )
 
-var (
-	resourseRepo repository.ResourceRepo = repository.NewResourceRepo()
-	resourceController controller.ResourceController = controller.NewController(resourseRepo)
-	resourceApi api.ResourceApi = *api.NewResourceApi(resourceController)
-)
 
 func main() {
 
@@ -26,10 +20,11 @@ func main() {
 	docs.SwaggerInfo.Description = "Preliminary API for infrastructure provisioning."
 	docs.SwaggerInfo.Host = "localhost:8080"
 	docs.SwaggerInfo.BasePath = "/api"
-	docs.SwaggerInfo.Schemes = []string{"https"}
+	docs.SwaggerInfo.Schemes = []string{"http"}
 
-
-	defer resourseRepo.CloseDB()
+	resourseRepo := repository.NewResourceRepo()
+	resourceController := controller.NewController(resourseRepo)
+	resourceApi := *api.NewResourceApi(resourceController)
 
 	server := gin.Default()
 
@@ -39,22 +34,22 @@ func main() {
 		
 		aws := apiRoutes.Group("/aws")
 		{
-			aws.GET("", resourceApi.GetAwsResources).Use(middlewares.Auth())
-			aws.POST("", resourceApi.AddAwsResource).Use(middlewares.Auth())
+			aws.GET("", resourceApi.GetAwsResources)
+			aws.POST("", resourceApi.AddAwsResource)
 			//aws.DELETE(":id", videoAPI.DeleteVideo).Use(middlewares.Auth())
 		}
 
 		azure := apiRoutes.Group("/azure")
 		{
-			azure.GET("", resourceApi.GetAzureResources).Use(middlewares.Auth())
-			azure.POST("", resourceApi.AddAzureResource).Use(middlewares.Auth())
+			azure.GET("", resourceApi.GetAzureResources)
+			azure.POST("", resourceApi.AddAzureResource)
 			//azure.DELETE(":id", videoAPI.DeleteVideo).Use(middlewares.Auth())
 		}
 
 		gcp := apiRoutes.Group("/gcp")
 		{
-			gcp.GET("", resourceApi.GetGcpResources).Use(middlewares.Auth())
-			gcp.POST("", resourceApi.AddGcpResource).Use(middlewares.Auth())
+			gcp.GET("", resourceApi.GetGcpResources)
+			gcp.POST("", resourceApi.AddGcpResource)
 			//gcp.DELETE(":id", videoAPI.DeleteVideo).Use(middlewares.Auth())
 		}
 	}

@@ -25,14 +25,16 @@ func NewResourceApi(controller controller.ResourceController) *ResourceApi {
 // @Tags AWS
 // @Accept  json
 // @Produce  json
-// @header firstname
-// @Param lastname formData string true "Last Name"
-// @Param graphtoken formData string true "Graph Token"
-// @Success 200 {array} entity.AwsResource
+// @Success 200 {array} entity.Resource
 // @Failure 401 {object} dto.Response
 // @Router /aws [get]
 func (api *ResourceApi) GetAwsResources(ctx *gin.Context) {
-	ctx.JSON(200, api.controller.GetAllAws())
+	res, err := api.controller.GetAllAws()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &dto.Response{Message: err.Error()})
+	} else {
+		ctx.JSON(200, res)
+	}
 }
 
 // GetAzure godoc
@@ -41,14 +43,16 @@ func (api *ResourceApi) GetAwsResources(ctx *gin.Context) {
 // @Tags Azure
 // @Accept  json
 // @Produce  json
-// @Param firstname formData string true "First Name"
-// @Param lastname formData string true "Last Name"
-// @Param graphtoken formData string true "Graph Token"
-// @Success 200 {array} entity.AzureResource
+// @Success 200 {array} entity.Resource
 // @Failure 401 {object} dto.Response
 // @Router /azure [get]
 func (api *ResourceApi) GetAzureResources(ctx *gin.Context) {
-	ctx.JSON(200, api.controller.GetAllAzure())
+	res, err := api.controller.GetAllAzure()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &dto.Response{Message: err.Error()})
+	} else {
+		ctx.JSON(200, res)
+	}
 }
 
 // GetGcp godoc
@@ -57,14 +61,16 @@ func (api *ResourceApi) GetAzureResources(ctx *gin.Context) {
 // @Tags GCP
 // @Accept  json
 // @Produce  json
-// @Param firstname formData string true "First Name"
-// @Param lastname formData string true "Last Name"
-// @Param graphtoken formData string true "Graph Token"
-// @Success 200 {array} entity.GcpResource
+// @Success 200 {array} entity.Resource
 // @Failure 401 {object} dto.Response
 // @Router /gcp [get]
 func (api *ResourceApi) GetGcpResources(ctx *gin.Context) {
-	ctx.JSON(200, api.controller.GetAllGcp())
+	res, err := api.controller.GetAllAws()
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, &dto.Response{Message: err.Error()})
+	} else {
+		ctx.JSON(200, res)
+	}
 }
 
 // CreateAWS godoc
@@ -73,10 +79,7 @@ func (api *ResourceApi) GetGcpResources(ctx *gin.Context) {
 // @Tags AWS
 // @Accept  json
 // @Produce  json
-// @Param video body entity.AwsResource true "Create Resource"
-// @Param firstname formData string true "First Name"
-// @Param lastname formData string true "Last Name"
-// @Param graphtoken formData string true "Graph Token"
+// @Param resource body entity.Resource true "Create Resource"
 // @Success 200 {object} dto.Response
 // @Failure 400 {object} dto.Response
 // @Failure 401 {object} dto.Response
@@ -100,10 +103,7 @@ func (api *ResourceApi) AddAwsResource(ctx *gin.Context) {
 // @Tags Azure
 // @Accept  json
 // @Produce  json
-// @Param video body entity.AzureResource true "Create Resource"
-// @Param firstname formData string true "First Name"
-// @Param lastname formData string true "Last Name"
-// @Param graphtoken formData string true "Graph Token"
+// @Param resource body entity.Resource true "Create Resource"
 // @Success 200 {object} dto.Response
 // @Failure 400 {object} dto.Response
 // @Failure 401 {object} dto.Response
@@ -127,10 +127,7 @@ func (api *ResourceApi) AddAzureResource(ctx *gin.Context) {
 // @Tags GCP
 // @Accept  json
 // @Produce  json
-// @Param video body entity.GcpResource true "Create Resource"
-// @Param firstname formData string true "First Name"
-// @Param lastname formData string true "Last Name"
-// @Param graphtoken formData string true "Graph Token"
+// @Param resource body entity.Resource true "Create Resource"
 // @Success 200 {object} dto.Response
 // @Failure 400 {object} dto.Response
 // @Failure 401 {object} dto.Response

@@ -37,5 +37,6 @@ require (
 	golang.org/x/tools v0.1.10 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/go-playground/validator.v9 v9.31.0
+	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 	labix.org/v2/mgo v0.0.0-20140701140051-000000000287
 )
