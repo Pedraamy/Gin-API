@@ -1,24 +1,13 @@
 package entity
 
 import (
-	"time"
+	
+	"labix.org/v2/mgo/bson"
 )
 
 
-type AwsResource struct {
-	ID          uint64    `gorm:"primary_key;auto_increment" json:"id"`
-	Name       string    `json:"title" binding:"min=2,max=100" gorm:"type:varchar(100)"`
-	CreatedAt   time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP"`
-}
-
-type AzureResource struct {
-	ID          uint64    `gorm:"primary_key;auto_increment" json:"id"`
-	Name       string    `json:"title" binding:"min=2,max=100" gorm:"type:varchar(100)"`
-	CreatedAt   time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP"`
-}
-
-type GcpResource struct {
-	ID          uint64    `gorm:"primary_key;auto_increment" json:"id"`
-	Name       string    `json:"title" binding:"min=2,max=100" gorm:"type:varchar(100)"`
-	CreatedAt   time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP"`
+type Resource struct {
+	ID		bson.ObjectId		`json:"id" bson:"_id"`
+	Name		string		`json:"description" bson:"description"`
+	Description		string		`json:"name" bson:"name"`
 }

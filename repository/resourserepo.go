@@ -1,9 +1,15 @@
 package repository
 
 import (
+	"context"
+	"log"
+
 	"github.com/jinzhu/gorm"
-	_"github.com/jinzhu/gorm/dialects/sqlite"
+	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/pedraamy/gin-api/entity"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type ResourceRepo interface {
@@ -20,18 +26,24 @@ type ResourceRepo interface {
 }
 
 type database struct {
-	connection *gorm.DB
+	ctx context.Context
+	base *mongo.Database
+	aws *mongo.Collection
+	azure *mongo.Collection
+	gcp *mongo.Collection
 }
 
 func NewResourceRepo() ResourceRepo {
-	db, err := gorm.Open("sqlite3", "test.db")
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://mongo:mongo@database-v1.myknd.mongodb.net/test"))
 	if err != nil {
-		panic("Failed to connect database")
+		log.Fatal("hihi")
 	}
-	db.AutoMigrate(&entity.AwsResource{}, &entity.AzureResource{}, &entity.GcpResource{})
-	return &database{
-		connection: db,
-	}
+	ctx := context.Background()
+	db := client.Database("Test-v1")
+	aws := db.Collection("AWS")
+	azure := db.Collection("Azure")
+	gcp := db.Collection("GCP")
+	return &database{ctx, db, aws, azure, gcp}
 }
 
 
@@ -64,20 +76,23 @@ func (db *database) DeleteGcp(resource entity.GcpResource) {
 	db.connection.Delete(&resource)
 }
 
-func (db *database) GetAllAws() []entity.AwsResource {
-	var resources []entity.AwsResource
-	db.connection.Set("gorm:auto_preload", true).Find(&resources)
-	return resources
+func (db *database) GetAllAws() []bson.D {
+	cur, err := db.aws.Find(db.ctx, bson.D{})
+	var results []bson.D
+	err = cur.All(db.ctx, &results)
+	return results
 }
 
-func (db *database) GetAllAzure() []entity.AzureResource {
-	var resources []entity.AzureResource
-	db.connection.Set("gorm:auto_preload", true).Find(&resources)
-	return resources
+func (db *database) GetAllAzure() []bson.D {
+	cur, err := db.aws.Find(db.ctx, bson.D{})
+	var results []bson.D
+	err = cur.All(db.ctx, &results)
+	return results
 }
 
-func (db *database) GetAllGcp() []entity.GcpResource {
-	var resources []entity.GcpResource
-	db.connection.Set("gorm:auto_preload", true).Find(&resources)
-	return resources
+func (db *database) GetAllGcp() []bson.D {
+	cur, err := db.aws.Find(db.ctx, bson.D{})
+	var results []bson.D
+	err = cur.All(db.ctx, &results)
+	return results
 }

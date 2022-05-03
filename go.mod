@@ -31,9 +31,11 @@ require (
 	github.com/swaggo/swag v1.8.1
 	github.com/urfave/cli v1.22.3 // indirect
 	github.com/urfave/cli/v2 v2.5.0 // indirect
+	go.mongodb.org/mongo-driver v1.9.0
 	golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4 // indirect
 	golang.org/x/sys v0.0.0-20220422013727-9388b58f7150 // indirect
 	golang.org/x/tools v0.1.10 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/go-playground/validator.v9 v9.31.0
+	labix.org/v2/mgo v0.0.0-20140701140051-000000000287
 )

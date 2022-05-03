@@ -22,9 +22,10 @@ func NewResourceApi(controller controller.ResourceController) *ResourceApi {
 // GetAws godoc
 // @Summary List AWS Resources
 // @Description Get all the AWS Resources
+// @Tags AWS
 // @Accept  json
 // @Produce  json
-// @Param firstname formData string true "First Name"
+// @header firstname
 // @Param lastname formData string true "Last Name"
 // @Param graphtoken formData string true "Graph Token"
 // @Success 200 {array} entity.AwsResource
@@ -37,6 +38,7 @@ func (api *ResourceApi) GetAwsResources(ctx *gin.Context) {
 // GetAzure godoc
 // @Summary List Azure Resources
 // @Description Get all the Azure Resources
+// @Tags Azure
 // @Accept  json
 // @Produce  json
 // @Param firstname formData string true "First Name"
@@ -52,6 +54,7 @@ func (api *ResourceApi) GetAzureResources(ctx *gin.Context) {
 // GetGcp godoc
 // @Summary List GCP Resources
 // @Description Get all the AWS Resources
+// @Tags GCP
 // @Accept  json
 // @Produce  json
 // @Param firstname formData string true "First Name"
@@ -67,6 +70,7 @@ func (api *ResourceApi) GetGcpResources(ctx *gin.Context) {
 // CreateAWS godoc
 // @Summary Create new AWS Resource
 // @Description Create a new AWS Resource
+// @Tags AWS
 // @Accept  json
 // @Produce  json
 // @Param video body entity.AwsResource true "Create Resource"
@@ -93,6 +97,7 @@ func (api *ResourceApi) AddAwsResource(ctx *gin.Context) {
 // CreateAzure godoc
 // @Summary Create new Azure Resource
 // @Description Create a new Azure Resource
+// @Tags Azure
 // @Accept  json
 // @Produce  json
 // @Param video body entity.AzureResource true "Create Resource"
@@ -119,6 +124,7 @@ func (api *ResourceApi) AddAzureResource(ctx *gin.Context) {
 // CreateGcp godoc
 // @Summary Create new GCP Resource
 // @Description Create a new GCP Resource
+// @Tags GCP
 // @Accept  json
 // @Produce  json
 // @Param video body entity.GcpResource true "Create Resource"
