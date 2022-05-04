@@ -12,8 +12,8 @@ import (
 
 type ResourceRepo interface {
 	AddAws(resource entity.Resource) (*mongo.InsertOneResult, error)
-	AddAzure(resource entity.Resource) error
-	AddGcp(resource entity.Resource) error
+	AddAzure(resource entity.Resource) (*mongo.InsertOneResult, error)
+	AddGcp(resource entity.Resource) (*mongo.InsertOneResult, error)
 	/* DeleteAws(resource entity.Resource) error
 	DeleteAzure(resource entity.Resource) error
 	DeleteGcp(resource entity.Resource) error */
@@ -59,20 +59,20 @@ func (db *database) AddAws(resource entity.Resource) (*mongo.InsertOneResult, er
 	return res, nil
 }
 
-func (db *database) AddAzure(resource entity.Resource) error {
-	_, err := db.azure.InsertOne(db.ctx, resource)
+func (db *database) AddAzure(resource entity.Resource) (*mongo.InsertOneResult, error) {
+	res, err := db.AddCollection("Azure", resource)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return res, nil
 }
 
-func (db *database) AddGcp(resource entity.Resource) error {
-	_, err := db.gcp.InsertOne(db.ctx, resource)
+func (db *database) AddGcp(resource entity.Resource) (*mongo.InsertOneResult, error) {
+	res, err := db.AddCollection("GCP", resource)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return res, nil
 }
 
 /* func (db *database) DeleteAws(resource entity.Resource) {
@@ -99,7 +99,7 @@ func (db *database) GetAllAws() ([]bson.D, error) {
 }
 
 func (db *database) GetAllAzure() ([]bson.D, error) {
-	cur, err := db.aws.Find(db.ctx, bson.D{})
+	cur, err := db.GetAllCollection("Azure")
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +112,7 @@ func (db *database) GetAllAzure() ([]bson.D, error) {
 }
 
 func (db *database) GetAllGcp() ([]bson.D, error) {
-	cur, err := db.aws.Find(db.ctx, bson.D{})
+	cur, err := db.GetAllCollection("GCP")
 	if err != nil {
 		return nil, err
 	}

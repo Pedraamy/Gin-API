@@ -1,9 +1,6 @@
 package dto
 
 type Response struct {
-	Response interface{} `json:"message"`
-}
-
-type Success struct {
+	Response string `json:"response"`
 	ID interface{} `json:"ID"`
 }

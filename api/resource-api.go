@@ -87,13 +87,9 @@ func (api *ResourceApi) GetGcpResources(ctx *gin.Context) {
 func (api *ResourceApi) AddAwsResource(ctx *gin.Context) {
 	res, err := api.controller.AddAws(ctx)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &dto.Response{
-			Response: err.Error(),
-		})
+		ctx.JSON(http.StatusBadRequest, &dto.Response{Response: err.Error()})
 	} else {
-		ctx.JSON(200, &dto.Response{
-			Response: res.InsertedID,
-		})
+		ctx.JSON(200, &dto.Response{Response: res.InsertedID})
 	}
 }
 
@@ -109,15 +105,11 @@ func (api *ResourceApi) AddAwsResource(ctx *gin.Context) {
 // @Failure 401 {object} dto.Response
 // @Router /azure [post]
 func (api *ResourceApi) AddAzureResource(ctx *gin.Context) {
-	err := api.controller.AddAzure(ctx)
+	res, err := api.controller.AddAzure(ctx)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &dto.Response{
-			Response: err.Error(),
-		})
+		ctx.JSON(http.StatusBadRequest, &dto.Response{Response: err.Error()})
 	} else {
-		ctx.JSON(http.StatusOK, &dto.Response{
-			Response: "Success!",
-		})
+		ctx.JSON(200, &dto.Response{Response: res.InsertedID})
 	}
 }
 
@@ -133,14 +125,10 @@ func (api *ResourceApi) AddAzureResource(ctx *gin.Context) {
 // @Failure 401 {object} dto.Response
 // @Router /gcp [post]
 func (api *ResourceApi) AddGcpResource(ctx *gin.Context) {
-	err := api.controller.AddGcp(ctx)
+	res, err := api.controller.AddGcp(ctx)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &dto.Response{
-			Response: err.Error(),
-		})
+		ctx.JSON(http.StatusBadRequest, &dto.Response{Response: err.Error()})
 	} else {
-		ctx.JSON(http.StatusOK, &dto.Response{
-			Response: "Success!",
-		})
+		ctx.JSON(200, &dto.Response{Response: res.InsertedID})
 	}
 }

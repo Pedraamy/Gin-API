@@ -11,8 +11,8 @@ import (
 
 type ResourceController interface {
 	AddAws(c *gin.Context) (*mongo.InsertOneResult, error)
-	AddAzure(c *gin.Context) error
-	AddGcp(c *gin.Context) error
+	AddAzure(c *gin.Context) (*mongo.InsertOneResult, error)
+	AddGcp(c *gin.Context) (*mongo.InsertOneResult, error)
 	/* DeleteAws(c *gin.Context) error
 	DeleteAzure(c *gin.Context) error
 	DeleteGcp(c *gin.Context) error */
@@ -72,38 +72,38 @@ func (ctrl *controller) AddAws(c *gin.Context) (*mongo.InsertOneResult, error) {
 	return res, nil
 }
 
-func (ctrl *controller) AddAzure(c *gin.Context) error {
+func (ctrl *controller) AddAzure(c *gin.Context) (*mongo.InsertOneResult, error) {
 	var resource entity.Resource
 	err := c.ShouldBindJSON(&resource)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	err = ctrl.validate.Struct(resource)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	err = ctrl.repo.AddAzure(resource)
+	res, err := ctrl.repo.AddAzure(resource)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return res, nil
 }
 
-func (ctrl *controller) AddGcp(c *gin.Context) error {
+func (ctrl *controller) AddGcp(c *gin.Context) (*mongo.InsertOneResult, error) {
 	var resource entity.Resource
 	err := c.ShouldBindJSON(&resource)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	err = ctrl.validate.Struct(resource)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	err = ctrl.repo.AddGcp(resource)
+	res, err := ctrl.repo.AddGcp(resource)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return res, nil
 }
 
 /* func (ctrl *controller) DeleteAws(ctx *gin.Context) error {
