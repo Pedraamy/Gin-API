@@ -31,7 +31,7 @@ func NewResourceApi(controller controller.ResourceController) *ResourceApi {
 func (api *ResourceApi) GetAwsResources(ctx *gin.Context) {
 	res, err := api.controller.GetAllAws()
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &dto.Response{Message: err.Error()})
+		ctx.JSON(http.StatusBadRequest, &dto.Response{Response: err.Error()})
 	} else {
 		ctx.JSON(200, res)
 	}
@@ -49,7 +49,7 @@ func (api *ResourceApi) GetAwsResources(ctx *gin.Context) {
 func (api *ResourceApi) GetAzureResources(ctx *gin.Context) {
 	res, err := api.controller.GetAllAzure()
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &dto.Response{Message: err.Error()})
+		ctx.JSON(http.StatusBadRequest, &dto.Response{Response: err.Error()})
 	} else {
 		ctx.JSON(200, res)
 	}
@@ -67,7 +67,7 @@ func (api *ResourceApi) GetAzureResources(ctx *gin.Context) {
 func (api *ResourceApi) GetGcpResources(ctx *gin.Context) {
 	res, err := api.controller.GetAllAws()
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, &dto.Response{Message: err.Error()})
+		ctx.JSON(http.StatusBadRequest, &dto.Response{Response: err.Error()})
 	} else {
 		ctx.JSON(200, res)
 	}
@@ -88,11 +88,11 @@ func (api *ResourceApi) AddAwsResource(ctx *gin.Context) {
 	res, err := api.controller.AddAws(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &dto.Response{
-			Message: err.Error(),
+			Response: err.Error(),
 		})
 	} else {
-		ctx.JSON(200, &dto.Success{
-			Message: res.InsertedID,
+		ctx.JSON(200, &dto.Response{
+			Response: res.InsertedID,
 		})
 	}
 }
@@ -112,11 +112,11 @@ func (api *ResourceApi) AddAzureResource(ctx *gin.Context) {
 	err := api.controller.AddAzure(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &dto.Response{
-			Message: err.Error(),
+			Response: err.Error(),
 		})
 	} else {
 		ctx.JSON(http.StatusOK, &dto.Response{
-			Message: "Success!",
+			Response: "Success!",
 		})
 	}
 }
@@ -136,11 +136,11 @@ func (api *ResourceApi) AddGcpResource(ctx *gin.Context) {
 	err := api.controller.AddGcp(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &dto.Response{
-			Message: err.Error(),
+			Response: err.Error(),
 		})
 	} else {
 		ctx.JSON(http.StatusOK, &dto.Response{
-			Message: "Success!",
+			Response: "Success!",
 		})
 	}
 }
