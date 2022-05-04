@@ -89,7 +89,7 @@ func (api *ResourceApi) AddAwsResource(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &dto.Response{Response: err.Error()})
 	} else {
-		ctx.JSON(200, &dto.Response{Response: res.InsertedID})
+		ctx.JSON(200, &dto.Response{Response: "Succesfully inserted AWS resource!", ID: res.InsertedID})
 	}
 }
 
@@ -109,7 +109,7 @@ func (api *ResourceApi) AddAzureResource(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &dto.Response{Response: err.Error()})
 	} else {
-		ctx.JSON(200, &dto.Response{Response: res.InsertedID})
+		ctx.JSON(200, &dto.Response{Response: "Succesfully inserted Azure resource!", ID: res.InsertedID})
 	}
 }
 
@@ -129,6 +129,6 @@ func (api *ResourceApi) AddGcpResource(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &dto.Response{Response: err.Error()})
 	} else {
-		ctx.JSON(200, &dto.Response{Response: res.InsertedID})
+		ctx.JSON(200, &dto.Response{Response: "Succesfully inserted GCP resource!", ID: res.InsertedID})
 	}
 }
