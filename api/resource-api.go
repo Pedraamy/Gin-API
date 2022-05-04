@@ -85,14 +85,14 @@ func (api *ResourceApi) GetGcpResources(ctx *gin.Context) {
 // @Failure 401 {object} dto.Response
 // @Router /aws [post]
 func (api *ResourceApi) AddAwsResource(ctx *gin.Context) {
-	err := api.controller.AddAws(ctx)
+	res, err := api.controller.AddAws(ctx)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &dto.Response{
 			Message: err.Error(),
 		})
 	} else {
-		ctx.JSON(http.StatusOK, &dto.Response{
-			Message: "Success!",
+		ctx.JSON(200, &dto.Success{
+			Message: res.InsertedID,
 		})
 	}
 }

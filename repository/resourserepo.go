@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"log"
-	"time"
 
 	"github.com/pedraamy/gin-api/entity"
 	"go.mongodb.org/mongo-driver/bson"
@@ -12,7 +11,7 @@ import (
 )
 
 type ResourceRepo interface {
-	AddAws(resource entity.Resource) error
+	AddAws(resource entity.Resource) (*mongo.InsertOneResult, error)
 	AddAzure(resource entity.Resource) error
 	AddGcp(resource entity.Resource) error
 	/* DeleteAws(resource entity.Resource) error
@@ -27,23 +26,21 @@ type ResourceRepo interface {
 type database struct {
 	client *mongo.Client
 	ctx context.Context
-	base *mongo.Database
-	aws *mongo.Collection
-	azure *mongo.Collection
-	gcp *mongo.Collection
+	name string
 }
 
-func NewResourceRepo() ResourceRepo {
+func NewResourceRepo(name string) ResourceRepo {
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://mongo:mongo@database-v1.myknd.mongodb.net/test"))
 	if err != nil {
-		log.Fatal("hihi")
+		log.Fatal("lol")
 	}
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx := context.Background()
+	client.Connect(ctx)
 	/* db := client.Database("Test-v1")
 	aws := db.Collection("AWS")
 	azure := db.Collection("Azure")
 	gcp := db.Collection("GCP") */
-	return &database{client: client, ctx: ctx}
+	return &database{client: client, ctx: ctx, name: name}
 }
 
 
@@ -54,12 +51,12 @@ func (db *database) Close() {
 	}
 }
 
-func (db *database) AddAws(resource entity.Resource) error {
-	_, err := db.client.Database("Test-v1").Collection("AWS").InsertOne(db.ctx, resource)
+func (db *database) AddAws(resource entity.Resource) (*mongo.InsertOneResult, error) {
+	res, err := db.AddCollection("AWS", resource)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return res, nil
 }
 
 func (db *database) AddAzure(resource entity.Resource) error {
@@ -89,7 +86,7 @@ func (db *database) DeleteGcp(resource entity.GcpResource) {
 } */
 
 func (db *database) GetAllAws() ([]bson.D, error) {
-	cur, err := db.aws.Find(db.ctx, bson.D{})
+	cur, err := db.GetAllCollection("AWS")
 	if err != nil {
 		return nil, err
 	}
@@ -126,3 +123,19 @@ func (db *database) GetAllGcp() ([]bson.D, error) {
 	}
 	return results, nil
 }
+
+func (db *database) GetAllCollection(collection string) (*mongo.Cursor, error) {
+	cur, err := db.client.Database(db.name).Collection(collection).Find(db.ctx, bson.D{})
+	if err != nil {
+		return nil, err
+	}
+	return cur, err
+}
+
+func (db *database) AddCollection(collection string, resource entity.Resource) (*mongo.InsertOneResult, error) {
+	res, err := db.client.Database(db.name).Collection(collection).InsertOne(db.ctx, resource)
+	if err != nil {
+		return nil, err
+	}
+	return res, err
+} 

@@ -1,16 +1,16 @@
 package controller
 
 import (
-
 	"github.com/gin-gonic/gin"
 	"github.com/pedraamy/gin-api/entity"
 	"github.com/pedraamy/gin-api/repository"
-	"gopkg.in/go-playground/validator.v9"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"gopkg.in/go-playground/validator.v9"
 )
 
 type ResourceController interface {
-	AddAws(c *gin.Context) error
+	AddAws(c *gin.Context) (*mongo.InsertOneResult, error)
 	AddAzure(c *gin.Context) error
 	AddGcp(c *gin.Context) error
 	/* DeleteAws(c *gin.Context) error
@@ -55,21 +55,21 @@ func (ctrl *controller) GetAllGcp() ([]bson.D, error) {
 	return res, nil
 }
 
-func (ctrl *controller) AddAws(c *gin.Context) error {
+func (ctrl *controller) AddAws(c *gin.Context) (*mongo.InsertOneResult, error) {
 	var resource entity.Resource
 	err := c.ShouldBindJSON(&resource)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	err = ctrl.validate.Struct(resource)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	err = ctrl.repo.AddAws(resource)
+	res, err := ctrl.repo.AddAws(resource)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return res, nil
 }
 
 func (ctrl *controller) AddAzure(c *gin.Context) error {

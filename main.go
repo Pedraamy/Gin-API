@@ -22,10 +22,9 @@ func main() {
 	docs.SwaggerInfo.BasePath = "/api"
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
-	resourseRepo := repository.NewResourceRepo()
+	resourseRepo := repository.NewResourceRepo("Test-v1")
 	resourceController := controller.NewController(resourseRepo)
 	resourceApi := *api.NewResourceApi(resourceController)
-
 	server := gin.Default()
 
 
