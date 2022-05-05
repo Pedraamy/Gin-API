@@ -249,7 +249,8 @@ const docTemplate = `{
         "dto.Response": {
             "type": "object",
             "properties": {
-                "message": {
+                "ID": {},
+                "response": {
                     "type": "string"
                 }
             }

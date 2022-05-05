@@ -1,7 +1,8 @@
 definitions:
   dto.Response:
     properties:
-      message:
+      ID: {}
+      response:
         type: string
     type: object
   entity.Resource:
