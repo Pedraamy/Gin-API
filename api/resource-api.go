@@ -65,7 +65,7 @@ func (api *ResourceApi) GetAzureResources(ctx *gin.Context) {
 // @Failure 401 {object} dto.Response
 // @Router /gcp [get]
 func (api *ResourceApi) GetGcpResources(ctx *gin.Context) {
-	res, err := api.controller.GetAllAws()
+	res, err := api.controller.GetAllGcp()
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, &dto.Response{Response: err.Error()})
 	} else {
